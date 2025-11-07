@@ -1,38 +1,55 @@
+import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
-  const tracks = [
-    {
-      id: 0,
-      title: "Musicfun soundtrack",
-      url: "https://musicfun.it-incubator.app/api/samurai-way-soundtrack.mp3",
-    },
-    {
-      id: 1,
-      title: "Musicfun soundtrack instrumental",
-      url: "https://musicfun.it-incubator.app/api/samurai-way-soundtrack-instrumental.mp3",
-    },
-    {
-      id: 2,
-      title: "Musicfun soundtrack instrumental 2",
-      url: "https://musicfun.it-incubator.app/api/samurai-way-soundtrack-instrumental.mp3",
-    },
-    {
-      id: 3,
-      title: "Musicfun soundtrack instrumental 3",
-      url: "https://musicfun.it-incubator.app/api/samurai-way-soundtrack-instrumental.mp3",
-    },
-  ];
+  const [selectedTrackId, setSelectedTrackId] = useState(null);
+  const [tracks, setTracks] = useState(null);
+
+  useEffect(() => {
+    fetch("https://musicfun.it-incubator.app/api/1.0/playlists/tracks", {
+      headers: {
+        "api-key": "be366aef-78ba-4c70-b7f6-046b71b0dd9b",
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => setTracks(json.data));
+  }, []);
+
+  if (tracks === null) {
+    return <div>Loading...</div>;
+  }
+
+  if (tracks.length === 0) {
+    return <div>No tracks available</div>;
+  }
 
   return (
     <>
       <h1>Musicfun Player</h1>
+      <button
+        onClick={() => {
+          setSelectedTrackId(null);
+        }}>
+        Resset selection
+      </button>
       <ul>
         {tracks.map((track) => {
           return (
-            <li key={track.id}>
-              <div>{track.title}</div>
-              <audio src={track.url} controls></audio>
+            <li
+              key={track.id}
+              style={{
+                border:
+                  track.id === selectedTrackId ? "1px solid tomato" : "none",
+              }}
+              className="track">
+              <div
+                className="track-title"
+                onClick={() => {
+                  setSelectedTrackId(track.id);
+                }}>
+                {track.attributes.title}
+              </div>
+              <audio src={track.attributes.attachments[0].url} controls></audio>
             </li>
           );
         })}
