@@ -956,6 +956,7 @@ function App() {
   const [tracks, setTracks] = useState(null);
 
   const [email, setEmail] = useState("");
+
   useEffect(() => {
     fetch("https://musicfun.it-incubator.app/api/1.0/playlists/tracks", {
       headers: {
@@ -965,6 +966,24 @@ function App() {
       .then((res) => res.json())
       .then((json) => setTracks(json.data));
   }, []);
+
+  useEffect(() => {
+    if (!selectedTrackId) return;
+
+    fetch(
+      "https://musicfun.it-incubator.app/api/1.0/playlists/tracks/" +
+        selectedTrackId,
+      {
+        headers: {
+          "api-key": "be366aef-78ba-4c70-b7f6-046b71b0dd9b",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((json) => setSelectedTrack(json.data));
+
+    // setSelectedTrack(track);
+  }, [selectedTrackId]);
 
   if (tracks === null) {
     return <div>Loading...</div>;
@@ -1012,17 +1031,6 @@ function App() {
                   className="track-title"
                   onClick={() => {
                     setSelectedTrackId(track.id);
-                    fetch(
-                      "https://musicfun.it-incubator.app/api/1.0/playlists/tracks/" +
-                        track.id,
-                      {
-                        headers: {
-                          "api-key": "be366aef-78ba-4c70-b7f6-046b71b0dd9b",
-                        },
-                      }
-                    )
-                      .then((res) => res.json())
-                      .then((json) => setSelectedTrack(json.data));
                   }}>
                   {track.attributes.title}
                 </div>
@@ -1052,7 +1060,7 @@ function App() {
           {selectedTrack &&
             selectedTrackId &&
             selectedTrack.id !== selectedTrackId &&
-            "loading..."}
+            "loading new track"}
 
           {selectedTrack && (
             <div>
