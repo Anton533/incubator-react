@@ -1,37 +1,35 @@
 import { useState } from "react";
 import { useEffect } from "react";
 
-function TrackDetails() {
+function TrackDetails({ trackId }) {
   const [selectedTrack, setSelectedTrack] = useState(null);
 
-  const selectedTrackId = "40941736-77b7-4bb0-b3b2-ca1e31e1f4a6";
-
   useEffect(() => {
-    if (!selectedTrackId) return;
+    if (!trackId) {
+      setSelectedTrack(null);
+      return;
+    }
 
-    // fetch(
-    //   "https://musicfun.it-incubator.app/api/1.0/playlists/tracks/" +
-    //     selectedTrackId,
-    //   {
-    //     headers: {
-    //       "api-key": "be366aef-78ba-4c70-b7f6-046b71b0dd9b",
-    //     },
-    //   }
-    // )
-    //   .then((res) => res.json())
-    //   .then((json) => setSelectedTrack(json.data));
-  }, [selectedTrackId]);
+    fetch(
+      "https://musicfun.it-incubator.app/api/1.0/playlists/tracks/" + trackId,
+      {
+        headers: {
+          "api-key": "be366aef-78ba-4c70-b7f6-046b71b0dd9b",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((json) => setSelectedTrack(json.data));
+  }, [trackId]);
 
   return (
     <div className="track-details">
       <h3>Details:</h3>
-      {!selectedTrack && !selectedTrackId && "Track is not selected"}
-
-      {!selectedTrack && selectedTrackId && "Loading..."}
-
+      {!selectedTrack && !trackId && "Track is not selected"}
+      {!selectedTrack && trackId && "Loading..."}
       {selectedTrack &&
-        selectedTrackId &&
-        selectedTrack.id !== selectedTrackId &&
+        trackId &&
+        selectedTrack.id !== trackId &&
         "loading new track"}
 
       {selectedTrack && (

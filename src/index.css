@@ -31,7 +31,8 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -45,8 +46,19 @@ body {
   background-color: rgb(71, 39, 16);
 }
 
+.track__top {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-block-end: 10px;
+}
+
 .track-title {
   cursor: pointer;
+  user-select: none;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  font-weight: ;
   margin-block-end: 10px;
 }
 
@@ -65,10 +77,16 @@ body {
 }
 
 .track-img {
-  max-width: 120px;
+  max-width: 80px;
+  width: 100%;
+  border-radius: 5px;
 }
 
 h1,
 button {
   margin-block-end: 20px;
+}
+
+.page-wrapper {
+  padding: 20px;
 }
