@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 import TrackItem from "./TrackItem.tsx";
-import type { TrackListItemData } from "./TrackItem.tsx";
+import { getTracks, type TrackListItemData } from "../dal/api.ts";
 
 // const data = {
 //   data: [
@@ -961,13 +961,7 @@ function TracksList({ selectedTrackId, onTrackSelect }: Props) {
   const [tracks, setTracks] = useState<Array<TrackListItemData> | null>(null);
 
   useEffect(() => {
-    fetch("https://musicfun.it-incubator.app/api/1.0/playlists/tracks", {
-      headers: {
-        "api-key": "be366aef-78ba-4c70-b7f6-046b71b0dd9b",
-      },
-    })
-      .then((res) => res.json())
-      .then((json) => setTracks(json.data));
+    getTracks().then((json) => setTracks(json.data));
   }, []);
 
   if (tracks === null) {

@@ -1,11 +1,4 @@
-export type TrackListItemData = {
-  id: string;
-  attributes: {
-    title: string;
-    attachments: Array<{ url: string }>;
-    images: { main: Array<{ url: string }> };
-  };
-};
+import type { TrackListItemData } from "../dal/api";
 
 type Props = {
   track: TrackListItemData;
