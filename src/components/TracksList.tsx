@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 import TrackItem from "./TrackItem.tsx";
+import type { TrackListItemData } from "./TrackItem.tsx";
 
 // const data = {
 //   data: [
@@ -951,8 +952,13 @@ import TrackItem from "./TrackItem.tsx";
 //   },
 // };
 
-function TracksList({ selectedTrackId, onTrackSelect }) {
-  const [tracks, setTracks] = useState(null);
+type Props = {
+  selectedTrackId: string | null;
+  onTrackSelect: (id: string | null) => void;
+};
+
+function TracksList({ selectedTrackId, onTrackSelect }: Props) {
+  const [tracks, setTracks] = useState<Array<TrackListItemData> | null>(null);
 
   useEffect(() => {
     fetch("https://musicfun.it-incubator.app/api/1.0/playlists/tracks", {
@@ -971,23 +977,20 @@ function TracksList({ selectedTrackId, onTrackSelect }) {
     return <div>No tracks available</div>;
   }
 
-  const handleClick = (trackId) => {
+  const handleClick = (trackId: string | null) => {
     onTrackSelect?.(trackId);
-    // setSelectedTrack(track);
   };
 
   return (
     <ul>
       {tracks.map((track) => {
         return (
-          <>
-            <TrackItem
-              key={track.id}
-              track={track}
-              isSelected={track.id === selectedTrackId}
-              onSelect={handleClick}
-            />
-          </>
+          <TrackItem
+            key={track.id}
+            track={track}
+            onSelect={handleClick}
+            isSelected={track.id === selectedTrackId}
+          />
         );
       })}
     </ul>

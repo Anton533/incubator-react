@@ -1,8 +1,22 @@
 import { useState } from "react";
 import { useEffect } from "react";
 
-function TrackDetails({ trackId }) {
-  const [selectedTrack, setSelectedTrack] = useState(null);
+type TrackDetailsData = {
+  id: string;
+  attributes: {
+    title: string;
+    user: { name: string | null };
+  };
+};
+
+type Props = {
+  trackId: string | null;
+};
+
+function TrackDetails({ trackId }: Props) {
+  const [selectedTrack, setSelectedTrack] = useState<TrackDetailsData | null>(
+    null
+  );
 
   useEffect(() => {
     if (!trackId) {

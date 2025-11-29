@@ -1,9 +1,24 @@
-function TrackItem({ track, onSelect, isSelected }) {
+export type TrackListItemData = {
+  id: string;
+  attributes: {
+    title: string;
+    attachments: Array<{ url: string }>;
+    images: { main: Array<{ url: string }> };
+  };
+};
+
+type Props = {
+  track: TrackListItemData;
+  onSelect: (id: string | null) => void;
+  isSelected: boolean;
+};
+
+function TrackItem({ track, onSelect, isSelected }: Props) {
   const handleClick = () => onSelect?.(track.id);
 
   return (
     <li
-      // key={track.id}
+      key={track.id}
       style={{
         border: isSelected ? "1px solid tomato" : "none",
       }}
