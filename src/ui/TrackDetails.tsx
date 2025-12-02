@@ -1,39 +1,27 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import { getTrack, type TrackDetailsData } from "../dal/api";
+import { useTrackDetail } from "../bll/useTrackDetail";
 
 type Props = {
   trackId: string | null;
 };
 
 function TrackDetails({ trackId }: Props) {
-  const [selectedTrack, setSelectedTrack] = useState<TrackDetailsData | null>(
-    null
-  );
-
-  useEffect(() => {
-    if (!trackId) {
-      setSelectedTrack(null);
-      return;
-    }
-    getTrack(trackId).then((json) => setSelectedTrack(json.data));
-  }, [trackId]);
+  const { trackDetails } = useTrackDetail(trackId);
 
   return (
     <div className="track-details">
       <h3>Details:</h3>
-      {!selectedTrack && !trackId && "Track is not selected"}
-      {!selectedTrack && trackId && "Loading..."}
-      {selectedTrack &&
+      {!trackDetails && !trackId && "Track is not selected"}
+      {!trackDetails && trackId && "Loading..."}
+      {trackDetails &&
         trackId &&
-        selectedTrack.id !== trackId &&
+        trackDetails.id !== trackId &&
         "loading new track"}
 
-      {selectedTrack && (
+      {trackDetails && (
         <div>
-          <h3>{selectedTrack.attributes.title}</h3>
+          <h3>{trackDetails.attributes.title}</h3>
           <h4>Name</h4>
-          <p>{selectedTrack.attributes.user.name ?? "no lurics"}</p>
+          <p>{trackDetails.attributes.user.name ?? "no lurics"}</p>
         </div>
       )}
     </div>
